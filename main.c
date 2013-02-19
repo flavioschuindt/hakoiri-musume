@@ -18,5 +18,13 @@ int main(int argc, char *argv[])
 	printf("\n******* CURRENT CONFIGURATION *******\n");
 	print_current_configuration();
 
+	move();
+	printf("\n******* POSSIBILITIES *******\n");
+	print_possibilities();
+
+	/*move();
+	printf("\n******* POSSIBILITIES *******\n");
+	print_possibilities();*/
+
 	return 0;
 }
