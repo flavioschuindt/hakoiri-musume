@@ -8,8 +8,12 @@ All functions to manipulate matrixes
 */
 
 void create_initial_configuration(); /*Create the initial board configuration*/
-void print_current_configuration(); /*Print the current board configuration*/
+void print_configuration(char matrix[][COL]); /*Print a board configuration*/
 void move(); /*Move to available positions*/
 void print_possibilities(); /*Print moving possibilities from current configuration*/
+void check_possible_enemy_movements(point empty_space); /*check all the enemy movements on the board from current configuration*/
+void check_possible_maiden_movements(point empty_space_1, point empty_space_2); /*check all the maiden movements on the board from current configuration*/
+
+int hash(char matrix[][COL]); /*calculate the matrix hash*/ 
 
 #endif
