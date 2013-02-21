@@ -19,8 +19,8 @@ int main(int argc, char *argv[])
 	print_configuration(current_board_config->matrix);
 	move();
 
-	/*printf("\n******* POSSIBILITIES *******\n");
-	print_possibilities();*/
+	printf("\n******* POSSIBILITIES *******\n");
+	print_possibilities();
 
 	return 0;
 }

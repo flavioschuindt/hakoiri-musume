@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 
 #include "matrix.h"
 #include "tree.h"
@@ -54,7 +53,7 @@ void print_possibilities()
 
 	int k = 0;
 
-	while (current_board_config->possibilities[k] != NULL)
+	while (k < 8)
 	{
 		print_configuration(current_board_config->possibilities[k]->matrix);
 		printf("\n");
@@ -83,7 +82,7 @@ void check_possible_enemy_movements(point empty_space)
 		}
 	}
 	if( ((j+1) >= 0 && (j+1) <= COL) )
-	{
+	{	
 		if (current_board_config->matrix[i][j+1] == 'I') /* Is the right neighbor from an empty space an enemy (I)?*/
 		{
 			/*Move enemy*/
@@ -96,7 +95,7 @@ void check_possible_enemy_movements(point empty_space)
 			current_board_config->matrix[i][j+1] = 'I';
 		}
 	}
-	if( ((i-1) >= 0 && (i-1) <= COL) )
+	if( ((i-1) >= 0 && (i-1) <= ROW) )
 	{
 		if (current_board_config->matrix[i-1][j] == 'I') /* Is the upstairs neighbor from an empty space an enemy (I)?*/
 		{
@@ -110,7 +109,7 @@ void check_possible_enemy_movements(point empty_space)
 			current_board_config->matrix[i-1][j] = 'I';
 		}
 	}
-	if( ((i+1) >= 0 && (i+1) <= COL) )
+	if( ((i+1) >= 0 && (i+1) <= ROW) )
 	{
 		if (current_board_config->matrix[i+1][j] == 'I') /* Is the downstairs neighbor from an empty space an enemy (I)?*/
 		{
@@ -228,7 +227,8 @@ int hash(char matrix[][COL])
 	{
 		for (j=0; j<COL; j++)
 		{
-			sum+=atoi(&matrix[i][j]);
+			j == 0 ? (sum += matrix[i][j] + ANSWER_TO_LIFE_UNIVERSE_AND_EVERYTHING) :  (sum+=matrix[i][j]);
+			
 		}
 
 	}

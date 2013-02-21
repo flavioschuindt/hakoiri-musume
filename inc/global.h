@@ -7,6 +7,8 @@ This header contains all the new type definitions and global variables
 #define ROW 5
 #define COL 4
 
+#define ANSWER_TO_LIFE_UNIVERSE_AND_EVERYTHING 42
+
  /* struct that represents the index tree */
 typedef struct index_tree_node
 {
@@ -21,6 +23,7 @@ typedef struct main_tree_node
 	char matrix[ROW][COL];
 	struct main_tree_node* possibilities[8];
 	int hs_table[8];
+	int child_nodes_count;
 }main_tree_node;
 
 /*struct that represents a point in the board*/

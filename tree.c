@@ -30,49 +30,63 @@ int install_node_main_tree(char matrix[][COL])
 
 	int  hs = hash(matrix);
 
-	for (i=0; i<8; i++)
+	if (current_board_config->possibilities[0] == NULL) /*First possibility?*/
 	{
-		if (current_board_config->hs_table[i] == hs)
+		current_board_config->possibilities[0] = (main_tree_node*)malloc(sizeof(main_tree_node));
+		for (j=0; j<ROW; j++)
 		{
-			/*check for colision, i.e, the matrix already exists or is a different matrix with the same hash (colision case)?*/
-			for (j=0; j<ROW; j++)
+			for (k=0; k<COL; k++)
 			{
-				if (colision) break;
-
-				for (k=0; k<COL; k++)
-				{
-					if (matrix[j][k] != current_board_config->possibilities[i]->matrix[j][k])
-					{
-						colision = 1;
-						break;
-					}
-				}
-
-			}
-			if (!colision)
-			{
-				already_exists = 1;
+				current_board_config->possibilities[0]->matrix[j][k] = matrix[j][k];
 			}
 		}
+		current_board_config->hs_table[0] = hs;
 	}
-
-	if (!already_exists)
+	else
 	{
-
+	
 		for (i=0; i<8; i++)
 		{
-			if (current_board_config->possibilities[i] == NULL) /*Find the next possibility*/
+			if (current_board_config->hs_table[i] == hs)
 			{
-				current_board_config->possibilities[i] = (main_tree_node*)malloc(sizeof(main_tree_node));
+				/*check for colision, i.e, the matrix already exists or is a different matrix with the same hash (colision case)?*/
 				for (j=0; j<ROW; j++)
 				{
+					if (colision) break;
+
 					for (k=0; k<COL; k++)
 					{
-						current_board_config->possibilities[i]->matrix[j][k] = matrix[j][k];
+						if (matrix[j][k] != current_board_config->possibilities[i]->matrix[j][k])
+						{
+							colision = 1;
+							break;
+						}
 					}
+
 				}
-				current_board_config->hs_table[i] = hs;
+				already_exists = colision ? 0 : 1;
 				break;
+			}
+		}
+
+		if (!already_exists) 
+		{
+			/*Install new possibility node*/
+			for (i=0; i<8; i++)
+			{
+				if (current_board_config->possibilities[i] == NULL) /*Find the next possibility*/
+				{
+					current_board_config->possibilities[i] = (main_tree_node*)malloc(sizeof(main_tree_node));
+					for (j=0; j<ROW; j++)
+					{
+						for (k=0; k<COL; k++)
+						{
+							current_board_config->possibilities[i]->matrix[j][k] = matrix[j][k];
+						}
+					}
+					current_board_config->hs_table[i] = hs;
+					break;
+				}
 			}
 		}
 	}
