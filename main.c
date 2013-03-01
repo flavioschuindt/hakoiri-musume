@@ -17,10 +17,11 @@ int main(int argc, char *argv[])
 	create_initial_configuration();
 	printf("\n******* CURRENT CONFIGURATION *******\n");
 	print_configuration(current_board_config->matrix);
-	move();
+	/*move();
 
 	printf("\n******* POSSIBILITIES *******\n");
-	print_possibilities();
+	print_possibilities();*/
+	go_to_exit(current_board_config);
 
 	return 0;
 }

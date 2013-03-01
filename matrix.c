@@ -26,8 +26,6 @@ void create_initial_configuration()
 			}
 		}
 	}
-	current_board_config->matrix[2][1] = ' ';
-	current_board_config->matrix[2][2] = ' ';
 
 }
 
@@ -55,8 +53,15 @@ void print_possibilities()
 
 	while (k < 8)
 	{
-		print_configuration(current_board_config->possibilities[k]->matrix);
-		printf("\n");
+		if (current_board_config->possibilities[k]->matrix != NULL)
+		{
+			print_configuration(current_board_config->possibilities[k]->matrix);
+			printf("\n");
+		}
+		else
+		{
+			break;
+		}
 		k++;
 	}
 }
@@ -131,23 +136,26 @@ void check_possible_maiden_movements(point empty_space_1, point empty_space_2)
 	if ( empty_space_1.i == empty_space_2.i) /*Two horizontal points*/
 	{
 		/* check if the maiden is up or down*/
-		if ( (current_board_config->matrix[empty_space_1.i-1][empty_space_1.j] == 'D' && 
-			current_board_config->matrix[empty_space_2.i-1][empty_space_2.j] == 'D') ) //Up?
+		if ( ((empty_space_1.i-1) >=0) && ((empty_space_1.i-1) <= ROW) && ((empty_space_1.i-2) >=0) && ((empty_space_1.i-2) <= ROW)  ) 
 		{
-			/*Move maiden*/
-			
-			current_board_config->matrix[empty_space_1.i-1][empty_space_1.j] = ' ';
-			current_board_config->matrix[empty_space_2.i-1][empty_space_2.j] = ' ';
-			current_board_config->matrix[empty_space_1.i][empty_space_1.j] = 'D';
-			current_board_config->matrix[empty_space_2.i][empty_space_2.j] = 'D';
+			if ( (current_board_config->matrix[empty_space_1.i-1][empty_space_1.j] == 'D' && 
+				current_board_config->matrix[empty_space_2.i-1][empty_space_2.j] == 'D') ) //Up?
+			{
+				/*Move maiden*/
+				
+				current_board_config->matrix[empty_space_1.i][empty_space_1.j] = 'D';
+				current_board_config->matrix[empty_space_2.i][empty_space_2.j] = 'D';
+				current_board_config->matrix[empty_space_1.i-2][empty_space_1.j] = ' ';
+				current_board_config->matrix[empty_space_2.i-2][empty_space_2.j] = ' ';
 
-			install_node_main_tree(current_board_config->matrix);
+				install_node_main_tree(current_board_config->matrix);
 
-			/*Roolback to previous board configuration*/
-			current_board_config->matrix[empty_space_1.i-1][empty_space_1.j] = 'D';
-			current_board_config->matrix[empty_space_2.i-1][empty_space_2.j] = 'D';
-			current_board_config->matrix[empty_space_1.i][empty_space_1.j] = ' ';
-			current_board_config->matrix[empty_space_2.i][empty_space_2.j] = ' ';
+				/*Roolback to previous board configuration*/
+				current_board_config->matrix[empty_space_1.i-2][empty_space_1.j] = 'D';
+				current_board_config->matrix[empty_space_2.i-2][empty_space_2.j] = 'D';
+				current_board_config->matrix[empty_space_1.i][empty_space_1.j] = ' ';
+				current_board_config->matrix[empty_space_2.i][empty_space_2.j] = ' ';
+			}
 		}
 	}
 }
@@ -227,7 +235,18 @@ int hash(char matrix[][COL])
 	{
 		for (j=0; j<COL; j++)
 		{
-			j == 0 ? (sum += matrix[i][j] + ANSWER_TO_LIFE_UNIVERSE_AND_EVERYTHING) :  (sum+=matrix[i][j]);
+			if (matrix[i][j] == 'D')
+			{
+				sum += i * j * ANSWER_TO_LIFE_UNIVERSE_AND_EVERYTHING;
+			}
+			else if (matrix[i][j] == 'I')
+			{
+				sum += i * j * 2 * ANSWER_TO_LIFE_UNIVERSE_AND_EVERYTHING;
+			}
+			else
+			{
+				sum += i * j * 3 * ANSWER_TO_LIFE_UNIVERSE_AND_EVERYTHING;
+			}
 			
 		}
 
@@ -235,5 +254,32 @@ int hash(char matrix[][COL])
 
 	return sum;
 
+}
+
+void go_to_exit(main_tree_node *start_point)
+{
+	int i = 0;
+
+	if(start_point != NULL)
+	{
+		if (start_point->matrix[3][1] == 'D' && start_point->matrix[3][2] == 'D' && 
+			start_point->matrix[4][1] == 'D' && start_point->matrix[4][2] == 'D')
+		{
+			printf("SAIDA!");
+		}
+		else
+		{
+			move();
+			for (i = 0; i < 8; i++)
+			{
+				if (current_board_config->possibilities[i]->matrix != NULL)
+				{
+					current_board_config = current_board_config->possibilities[i];
+					//move();
+					go_to_exit(current_board_config);
+				}
+			}
+		}
+	}
 }
 
