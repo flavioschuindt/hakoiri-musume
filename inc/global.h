@@ -9,21 +9,14 @@ This header contains all the new type definitions and global variables
 
 #define ANSWER_TO_LIFE_UNIVERSE_AND_EVERYTHING 42
 
- /* struct that represents the index tree */
-typedef struct index_tree_node
-{
-	struct index_tree_node* left;
-	struct index_tree_node* right;
-	int hash;
-}index_tree_node;
-
 /* Main tree struct */
 typedef struct main_tree_node
 {
 	char matrix[ROW][COL];
+	struct main_tree_node* left; /*binary search*/
+	struct main_tree_node* right; /*binary search*/
+	int hash; /*binary search*/
 	struct main_tree_node* possibilities[8];
-	int hs_table[8];
-	int child_nodes_count;
 }main_tree_node;
 
 /*struct that represents a point in the board*/
@@ -34,6 +27,6 @@ typedef struct point
 }point;
 
 main_tree_node *current_board_config;
-index_tree_node *head;
+main_tree_node *head; /*binary search*/
 
 #endif
