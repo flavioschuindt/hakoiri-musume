@@ -6,8 +6,7 @@ This header contains all the new type definitions and global variables
 
 #define ROW 5
 #define COL 4
-
-#define ANSWER_TO_LIFE_UNIVERSE_AND_EVERYTHING 42
+#define MATRIX_LEN ROW*COL+1
 
 /* Main tree struct */
 typedef struct main_tree_node
@@ -28,5 +27,7 @@ typedef struct point
 
 main_tree_node *current_board_config;
 main_tree_node *head; /*binary search*/
+
+int num_step;
 
 #endif

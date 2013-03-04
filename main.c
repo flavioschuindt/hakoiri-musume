@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
 
 	printf("\n******* POSSIBILITIES *******\n");
 	print_possibilities();*/
+	num_step = 0;
 	printf("\n******* GOING TO EXIT *******\n");
 	go_to_exit(&current_board_config);
 

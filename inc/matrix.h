@@ -16,5 +16,6 @@ void check_possible_maiden_movements(point empty_space_1, point empty_space_2, m
 void go_to_exit(main_tree_node **start_point); /*Go to exit*/
 
 int hash(char matrix[][COL]); /*calculate the matrix hash*/ 
+unsigned int fnv_hash (const char *s); /*hash function*/
 
 #endif
