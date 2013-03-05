@@ -211,12 +211,12 @@ void check_possible_maiden_movements(point empty_space_1, point empty_space_2, m
 		if ( 
 			((empty_space_1.j-1) >=0) && 
 			((empty_space_1.j-1) <= COL) && 
-			((empty_space_1.j+2) >=0) && 
-			((empty_space_1.j+2) <= COL) &&
+			((empty_space_1.j-2) >=0) && 
+			((empty_space_1.j-2) <= COL) &&
 			((empty_space_2.j-1) >=0) && 
 			((empty_space_2.j-1) <= COL) && 
-			((empty_space_2.j+2) >=0) && 
-			((empty_space_2.j+2) <= COL) 
+			((empty_space_2.j-2) >=0) && 
+			((empty_space_2.j-2) <= COL) 
 			)
 		{
 			if ( ((*node_main_tree)->matrix[empty_space_1.i][empty_space_1.j-1] == 'D' &&
@@ -226,8 +226,8 @@ void check_possible_maiden_movements(point empty_space_1, point empty_space_2, m
 				memcpy(matrix,(*node_main_tree)->matrix, ROW*COL*sizeof(char));
 				matrix[empty_space_1.i][empty_space_1.j] = 'D';
 				matrix[empty_space_2.i][empty_space_2.j] = 'D';
-				matrix[empty_space_1.i][empty_space_1.j+2] = ' ';
-				matrix[empty_space_2.i][empty_space_2.j+2] = ' ';
+				matrix[empty_space_1.i][empty_space_1.j-2] = ' ';
+				matrix[empty_space_2.i][empty_space_2.j-2] = ' ';
 				create_new_possibility_node(matrix, node_main_tree);
 			}
 		}
