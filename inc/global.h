@@ -25,8 +25,19 @@ typedef struct point
 	int j;
 }point;
 
+/*struct that represents a node in the path to the exit*/
+typedef struct path_linked_list
+{
+	struct main_tree_node* board_config;
+	struct path_linked_list* next;
+	struct path_linked_list* previous;
+}path_linked_list;
+
 main_tree_node *current_board_config;
 main_tree_node *head; /*binary search*/
+
+path_linked_list *last;
+path_linked_list *first;
 
 int num_step;
 

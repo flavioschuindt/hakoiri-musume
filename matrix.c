@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "matrix.h"
 #include "tree.h"
+#include "list.h"
 
 void create_initial_configuration()
 {
@@ -349,30 +351,52 @@ int hash(char matrix[][COL])
 void go_to_exit(main_tree_node **start_point)
 {
 	int i = 0;
+	path_linked_list *path;
 
 	if(*start_point != NULL)
 	{
-		if ((*start_point)->matrix[3][1] == 'D' && (*start_point)->matrix[3][2] == 'D' && 
-			(*start_point)->matrix[4][1] == 'D' && (*start_point)->matrix[4][2] == 'D')
-		{
-			printf("\nSAIDA!\n");
-			printf("\nNUMERO DE PASSOS: %d\n\n", num_step);
-			exit(0);
-		}
-		else
-		{
 			move(start_point);
+			/*
+			Check if a possibility for this node is the exit
+			*/
 			for (i = 0; i < 8; i++)
 			{
 				if ((*start_point)->possibilities[i]->matrix != NULL)
 				{
-					print_configuration((*start_point)->possibilities[i]->matrix);
-					printf("\n");
+					if ((*start_point)->possibilities[i]->matrix[3][1] == 'D' && (*start_point)->possibilities[i]->matrix[3][2] == 'D' && 
+						(*start_point)->possibilities[i]->matrix[4][1] == 'D' && (*start_point)->possibilities[i]->matrix[4][2] == 'D')
+					{
+						num_step++;
+						printf("\nSAIDA ENCONTRADA!\n");
+						printf("\nNUMERO DE PASSOS: %d\n\n", num_step);
+
+						path = (path_linked_list*) malloc(sizeof(path_linked_list*));
+						path->board_config = (*start_point)->possibilities[i];
+						insert_config_on_path(&first, &last, &path);
+						print_full_path_to_exit(&first);
+
+						exit(0);
+					}
+				}	
+			}
+			/*
+			For each possibility call recursively the go_to_exit function
+			*/
+			for (i = 0; i < 8; i++)
+			{
+				if ((*start_point)->possibilities[i]->matrix != NULL)
+				{
+					//print_configuration((*start_point)->possibilities[i]->matrix);
+					//printf("\n");
 					num_step++;
+					path = (path_linked_list*) malloc(sizeof(path_linked_list *));
+					path->board_config = (*start_point)->possibilities[i];
+					insert_config_on_path(&first, &last, &path);
 					go_to_exit(&((*start_point)->possibilities[i]));
 				}
 			}
-		}
 	}
+	num_step--;
+	remove_last_config_on_path(&last);
 }
 
